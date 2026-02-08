@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction | Professional AI System</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-heartbeat me-2"></i> CardioAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about"><i class="fas fa-info-circle me-1"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid main-container px-3 px-md-4">
+        <div class="row g-4 justify-content-center">
+            
+            <!-- Left Column: Input Form -->
+            <div class="col-lg-5 col-md-10 col-12">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3 border-bottom-0">
+                        <h5 class="card-title mb-0 fw-bold text-primary">
+                            <i class="fas fa-user-injured me-2"></i> Patient Data
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="predictionForm">
+                            
+                            <!-- Personal Details Section -->
+                            <div class="section-label mb-3 text-muted text-uppercase fw-bold small">Personal Details</div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="Age" name="Age" placeholder="Age" required min="1" max="120">
+                                        <label for="Age">Age (years)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="Sex" name="Sex" required>
+                                            <option value="" selected disabled>Select...</option>
+                                            <option value="1">Male</option>
+                                            <option value="0">Female</option>
+                                        </select>
+                                        <label for="Sex">Sex</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Clinical Metrics Section -->
+                            <div class="section-label mb-3 text-muted text-uppercase fw-bold small">Clinical Metrics</div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small">Chest Pain Type (0-4)</label>
+                                    <input type="range" class="form-range" id="Chest_pain_type" name="Chest_pain_type" min="0" max="4" step="1" oninput="this.nextElementSibling.value = this.value">
+                                    <output class="fw-bold ms-2">2</output>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="BP" name="BP" placeholder="Blood Pressure" required>
+                                        <label for="BP">Resting BP (mm Hg)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="Cholesterol" name="Cholesterol" placeholder="Cholesterol" required>
+                                        <label for="Cholesterol">Cholesterol (mg/dl)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="FBS_over_120" name="FBS_over_120" required>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <label for="FBS_over_120">Fasting BS > 120</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Test Results Section -->
+                            <div class="section-label mb-3 text-muted text-uppercase fw-bold small">Test Results</div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="EKG_results" name="EKG_results" placeholder="EKG" min="0" max="2" required>
+                                        <label for="EKG_results">EKG (0-2)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="Max_HR" name="Max_HR" placeholder="Max HR" required>
+                                        <label for="Max_HR">Max HR</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="Exercise_angina" name="Exercise_angina" required>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <label for="Exercise_angina">Ex. Angina</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="ST_depression" name="ST_depression" placeholder="ST Depression" step="0.1" required>
+                                        <label for="ST_depression">ST Depression</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="Slope_of_ST" name="Slope_of_ST" placeholder="Slope" min="0" max="2" required>
+                                        <label for="Slope_of_ST">Slope of ST (0-2)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="Number_of_vessels_fluro" name="Number_of_vessels_fluro" placeholder="Vessels" min="0" max="3" required>
+                                        <label for="Number_of_vessels_fluro">Vessels (0-3)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="Thallium" name="Thallium" required>
+                                            <option value="3">3 (Normal)</option>
+                                            <option value="6">6 (Fixed)</option>
+                                            <option value="7">7 (Reversable)</option>
+                                        </select>
+                                        <label for="Thallium">Thallium</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="button" class="btn btn-light text-secondary me-md-2" id="clearBtn">
+                                    <i class="fas fa-undo me-1"></i> Reset
+                                </button>
+                                <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm" id="analyzeBtn">
+                                    <i class="fas fa-stethoscope me-2"></i> Analyze Data
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Results & Analysis -->
+            <div class="col-lg-7 col-md-10 col-12">
+                <!-- Welcome / Initial State -->
+                <div id="initialState" class="card shadow-sm border-0 h-100 d-flex align-items-center justify-content-center text-center p-5">
+                    <div class="text-muted">
+                        <i class="fas fa-heartbeat fa-4x mb-3 text-primary opacity-25"></i>
+                        <h4>Ready to Analyze</h4>
+                        <p>Enter patient data on the left to generate prediction and AI explanations.</p>
+                    </div>
+                </div>
+
+                <!-- Results Dashboard (Hidden initially) -->
+                <div id="resultsDashboard" class="d-none">
+                    
+                    <!-- Prediction Card -->
+                    <div class="card shadow-sm border-0 mb-4 overflow-hidden">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div class="col-md-8 p-4">
+                                    <h6 class="text-uppercase text-muted fw-bold mb-1">Diagnosis Result</h6>
+                                    <h2 class="display-6 fw-bold mb-2" id="predictionText">--</h2>
+                                    <p class="lead mb-0" id="probabilityText">Confidence: --%</p>
+                                </div>
+                                <div class="col-md-4 bg-light d-flex flex-column align-items-center justify-content-center p-3 text-center border-start">
+                                    <h6 class="text-uppercase text-muted fw-bold mb-2">Risk Assessment</h6>
+                                    <span class="badge rounded-pill fs-6 px-3 py-2 mb-2" id="riskBadge">--</span>
+                                    <small class="text-muted">Based on 13 clinical features</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Tabs -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white border-bottom-0 pt-3 px-3">
+                            <ul class="nav nav-tabs card-header-tabs" id="analysisTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active fw-bold" id="shap-tab" data-bs-toggle="tab" data-bs-target="#shap-pane" type="button" role="tab">
+                                        <i class="fas fa-chart-bar me-2"></i>SHAP Analysis
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link fw-bold" id="lime-tab" data-bs-toggle="tab" data-bs-target="#lime-pane" type="button" role="tab">
+                                        <i class="fas fa-search-plus me-2"></i>LIME Explanation
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body p-4 bg-white">
+                            <div class="tab-content" id="myTabContent">
+                                <!-- SHAP Tab -->
+                                <div class="tab-pane fade show active" id="shap-pane" role="tabpanel">
+                                    <p class="text-muted small mb-3">
+                                        <i class="fas fa-info-circle me-1"></i> 
+                                        Shows the global feature importance. <span class="text-danger fw-bold">Red bars</span> push risk higher, <span class="text-primary fw-bold">Blue bars</span> lower it.
+                                    </p>
+                                    <div class="text-center plot-container">
+                                        <img id="shapPlot" src="" alt="SHAP Analysis" class="img-fluid rounded border">
+                                    </div>
+                                </div>
+                                
+                                <!-- LIME Tab -->
+                                <div class="tab-pane fade" id="lime-pane" role="tabpanel">
+                                    <p class="text-muted small mb-3">
+                                        <i class="fas fa-info-circle me-1"></i> 
+                                        Detailed breakdown for this specific patient. Shows exactly which values contributed most to the decision.
+                                    </p>
+                                    <div class="text-center plot-container">
+                                        <img id="limePlot" src="" alt="LIME Analysis" class="img-fluid rounded border">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-light p-3 d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Analysis ID: <span id="analysisId">#--</span></small>
+                            <button id="downloadBtn" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-file-pdf me-2"></i> Download Full Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Disclaimer -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="alert alert-light border text-muted small text-center" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Disclaimer:</strong> This tool uses Artificial Intelligence to estimate heart disease risk. It is intended for informational purposes only and does not constitute a medical diagnosis. Please consult a qualified healthcare professional for medical advice.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="d-none">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5 class="mt-3 text-white fw-light">Analyzing Patient Data...</h5>
+        <p class="text-white-50 small">Running SHAP & LIME Explanations</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="errorToast" class="toast text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="errorMessage">
+                Something went wrong.
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
